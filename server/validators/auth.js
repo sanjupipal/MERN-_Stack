@@ -21,3 +21,19 @@ exports.userLoginValidator = [
     .isLength({min:6})
     .withMessage('Password must be at least 6 digit'),
 ];
+
+exports.forgotPasswordValidator = [
+    check('email')
+    .isEmail()
+    .withMessage('Must be valid email'),
+];
+
+exports.restPasswordValidator = [
+    check('newPassword')
+    .isLength({min:6})
+    .withMessage('Password must be at least 6 digit'),
+    check('resetPasswordLink')
+    .not()
+    .isEmpty()
+    .withMessage('token is require  d'),
+];
