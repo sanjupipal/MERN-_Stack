@@ -13,6 +13,6 @@ router.post('/register/activate',registerActivate)
 router.post('/login', userLoginValidator, runValidation, login)
 
 router.put('/forgot-password', forgotPasswordValidator, runValidation, forgotPassword)
-router.post('/rest-password', restPasswordValidator, runValidation, restPassword)
+router.put('/reset-password', restPasswordValidator, runValidation, restPassword)
 
 module.exports = router;

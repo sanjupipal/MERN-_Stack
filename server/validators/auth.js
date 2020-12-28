@@ -35,5 +35,5 @@ exports.restPasswordValidator = [
     check('resetPasswordLink')
     .not()
     .isEmpty()
-    .withMessage('token is require  d'),
+    .withMessage('token is require  '),
 ];
