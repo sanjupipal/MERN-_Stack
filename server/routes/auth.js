@@ -12,4 +12,5 @@ router.post('/register/activate',registerActivate)
 
 router.post('/login', userLoginValidator, runValidation, login)
 
+
 module.exports = router;
