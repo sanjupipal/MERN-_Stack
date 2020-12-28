@@ -1,5 +1,9 @@
 import Layout from '../../components/layout';
+import axios from 'axios'
+import { API } from '../../config'
+import { getCookie } from '../../helpers/auth'
+import withUser from '../withUser'
 
-const  User = () => <Layout>Hello User!!</Layout>
+const  User = ({ user, token }) => <Layout>Hello User!! {JSON.stringify(user, token)}</Layout>
 
-export default User;
+export default withUser(User);
