@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const { registerEmailParams } = require('../helpers/email')
 const shortId = require('shortid')
 const expressJwt = require('express-jwt')
+const { use } = require('../routes/auth')
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKeyId: process.env.AWS_SECRET_ACCESS_KEY_ID,
@@ -117,4 +118,42 @@ exports.login = (req, res) =>{
 }
 
 
-exports.requireSignin = expressJwt({secret :process.env.JWT_SECRET})
+exports.requireSignin = expressJwt({secret :process.env.JWT_SECRET, algorithms: ['sha1', 'RS256', 'HS256']});
+
+exports.authMiddleware = (req, res, next) => {
+    const authUserId = req.user._id
+
+    User.findOne({_id: authUserId}).exec((err , user)=>{
+        if(err || !user){
+            return res.status(400).json({
+                error: "user not found"
+            })
+        }
+
+        req.profile = user
+        
+        next()
+    })
+}
+
+exports.adminMiddleware = (req, res, next) => {
+    const adminUserId = req.user._id
+
+    User.findOne({_id: adminUserId}).exec((err , user)=>{
+        if(err || !user){
+            return res.status(400).json({
+                error: "user not found"
+            })
+        }
+
+        if(user.role !== 'admin'){
+            return res.status(400).json({
+                error: "Admin resource. access denied"
+            })
+        }
+
+        req.profile = user
+        
+        next()
+    })
+}
