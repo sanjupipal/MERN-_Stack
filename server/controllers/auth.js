@@ -171,7 +171,7 @@ exports.forgotPassword = (req,res) =>{
         const token = jwt.sign({name: user.name}, process.env.JWT_RESET_PASSWORD, {expiresIn: '10m'})
         const params = forgotPasswordEmailParams(email, token)
 
-        return user.updateOne({restPasswordLink: token}, (err, success)=>{
+        return user.updateOne({resetPasswordLink: token}, (err, success)=>{
             if(err){
                 return res.status(400).json({
                     error: "Password reset failed. try later"
@@ -196,43 +196,41 @@ exports.forgotPassword = (req,res) =>{
 
 exports.restPassword = (req,res) =>{
     const {resetPasswordLink, newPassword} = req.body
+    if (resetPasswordLink) {
+        // check for expiry
+        jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, (err, success) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'Expired Link. Try again.'
+                });
+            }
 
-    jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, (err, success)=>{
-        if(err){
-            return res.status(400).json({
-                error: 'Expired Link. Try agin'
-            })
-        }
-
-        if(resetPasswordLink){
-            User.findOne({resetPasswordLink}).exec((err, user)=>{
-                if(err || !user){
+            User.findOne({ resetPasswordLink }).exec((err, user) => {
+                if (err || !user) {
                     return res.status(400).json({
-                        error: "Invalid token. Try again"
-                    })
-                }
-                
-                const updatedFields ={
-                    password : newPassword,
-                    restPasswordLink: ''
+                        error: 'Invalid token. Try again'
+                    });
                 }
 
-                user = _.extend(user, updatedFields)
+                const updatedFields = {
+                    password: newPassword,
+                    resetPasswordLink: ''
+                };
 
-                user.save( (err, result)=>{
-                    if(err){
+                user = _.extend(user, updatedFields);
+
+                user.save((err, result) => {
+                    if (err) {
                         return res.status(400).json({
-                            error: "Password reset failed. Try again"
-                        }) 
+                            error: 'Password reset failed. Try again'
+                        });
                     }
-                })
-                res.json({
-                    message: `Great! now you can login with your new password`
-                })
-    
-            })
-        }
-    })
 
-    
+                    res.json({
+                        message: `Great! Now you can login with your new password`
+                    });
+                });
+            });
+        });
+    }   
 }

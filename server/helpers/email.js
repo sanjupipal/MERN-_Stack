@@ -42,7 +42,7 @@ exports.forgotPasswordEmailParams = (email, token) =>{
                     <html>
                         <h1>Rest Password Link</h1>
                         <p>Please use following link to complete your registration:</p>
-                        <p>${process.env.CLIENT_URL}/auth/password/reset${token}</p>
+                        <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
                     </html>`
                 }
             },

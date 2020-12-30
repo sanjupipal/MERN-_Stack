@@ -8,7 +8,7 @@ import {withRouter} from 'next/router'
 
 const ActivateAccount = ({router}) =>{
     
-    const [state, setstate] = useState({
+    const [state, setState] = useState({
         name:'',
         token:'',
         buttonText:'Activate Account',
@@ -21,21 +21,21 @@ const ActivateAccount = ({router}) =>{
         let token = router.query.id
         if(token){
             const {name} = jwt.decode(token)
-            setstate({...state, name: name, token: token})
+            setState({...state, name: name, token: token})
         }
     }, [router])
 
     const clickSubmit = async e =>{
         e.preventDefault()
         // console.log("ssss");
-        setstate({...state, buttonText: 'Activating'})
+        setState({...state, buttonText: 'Activating'})
 
         try{
             const response = await axios.post(`${API}/register/activate`, {token} )
             console.log(response);
-            setstate({...state, name:'', token:'', buttonText:'Activated', success: response.data.message})
+            setState({...state, name:'', token:'', buttonText:'Activated', success: response.data.message})
         }catch(error){
-            setstate({...state, name:'', token:'', buttonText:'Activate Account', error: error.response.data.error})
+            setState({...state, name:'', token:'', buttonText:'Activate Account', error: error.response.data.error})
         }
     }
     return <Layout>
