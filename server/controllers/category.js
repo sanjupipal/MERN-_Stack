@@ -66,18 +66,18 @@ exports.create = (req, res) =>{
         })
 
     })
-
-    // const {name, content} = req.body
-
-    // const image = {
-    //     url :`https://via.placeholder.com/150.png?text=${process.env.CLIENT_URL}`,
-    //     key :'123'
-    // }
-
-    // const category = new Category({slug,image,name})
-
-    // category.postedBy = req.user._id
 } 
+
+exports.list = (req, res) =>{
+    Category.find({}).exec((err, data)=>{
+        if(err){
+            return res.status(400).json({
+                error:'Categories could not load'
+            })
+        }
+        res.json(data)
+    })
+}
 
 exports.read = (req, res) =>{
 
@@ -87,9 +87,6 @@ exports.update = (req, res) =>{
 
 }
 
-exports.list = (req, res) =>{
-
-}
 
 exports.remove = (req, res) =>{
 
