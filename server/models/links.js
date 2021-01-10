@@ -36,7 +36,7 @@ const linkSchema = new  mongoose.Schema({
         type: String,
         default: 'Video'
     },
-    clikes:{
+    clicks:{
         type: Number,
         default: 0
     }
