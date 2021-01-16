@@ -161,6 +161,9 @@ exports.update = (req, res) =>{
     const {slug} = req.params
     const {name , image , content} =req.body
 
+    const base64Data = new Buffer.from(image.replace(/^data:image\/\w+;base64,/,''), 'base64')
+    const type = image.split(';')[0].split('/')[1]
+    
     Category.findOneAndUpdate({slug}, {name, content}, {new: true}).exec((err, updated)=>{
         if(err){
             return res.status(400).json({
