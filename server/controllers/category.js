@@ -170,7 +170,7 @@ exports.update = (req, res) =>{
         if(image){
             const deleteParams ={
                 Bucket: 'hacker-sanju',
-                Key: `category/${updated.image.key}`
+                Key: `${updated.image.key}`
             }
             s3.deleteObject(deleteParams, (err,data) => {
                 if(err){
@@ -226,7 +226,7 @@ exports.remove = (req, res) =>{
 
         const deleteParams ={
             Bucket: 'hacker-sanju',
-            Key: `category/${data.image.key}`
+            Key: `${data.image.key}`
         }
         s3.deleteObject(deleteParams, (err,data) => {
             if(err){

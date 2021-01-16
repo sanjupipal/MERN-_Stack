@@ -30,7 +30,7 @@ const Create = ({ user, token }) => {
     }
 
     const handleChange = name => e => {
-        setState({ ...state, [name]: e.target.value, error: '', success: '' });
+        setState({ ...state, [name]: e.target.value, error: '', success: '', buttonText:'Create' });
     };
 
     const handleImage = event => {
@@ -72,10 +72,10 @@ const Create = ({ user, token }) => {
             );
             console.log('CATEGORY CREATE RESPONSE', response);
             setImageUploadButtonName('Upload image');
+            setContent('')
             setState({
                 ...state,
                 name: '',
-                content: '',
                 formData: '',
                 buttonText: 'Created',
                 imageUploadText: 'Upload image',

@@ -9,9 +9,7 @@ const  Admin = ({user, token}) => <Layout>
         <div className="col-md-4">
             <ul className="nav flex-column">
                 <li className="nav-item">
-                    <Link href="/admin/category/create">
-                        <a className="nav-link">Create category</a>
-                    </Link>
+                        <a href="/admin/category/create" className="nav-link">Create category</a>
                 </li>
                 <li className="nav-item">
                     <Link href="/admin/category/read">
