@@ -12,7 +12,7 @@ const  Login = () => {
     
     const[state, setState] = useState({
         email:'25san1997@gmail.com',
-        password:'252sanju',
+        password:'12345678',
         error: '',
         success:'', 
         buttonText:'Login'
