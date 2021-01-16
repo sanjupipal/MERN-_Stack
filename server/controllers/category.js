@@ -5,6 +5,7 @@ const formidable = require('formidable')
 const AWS = require('aws-sdk')
 const uuidv4 = require('uuid/v4')
 const fs = require('fs')
+const category = require('../models/category')
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -157,10 +158,85 @@ exports.read = (req, res) =>{
 }
 
 exports.update = (req, res) =>{
+    const {slug} = req.params
+    const {name , image , content} =req.body
 
+    Category.findOneAndUpdate({slug}, {name, content}, {new: true}).exec((err, updated)=>{
+        if(err){
+            return res.status(400).json({
+                error: 'could not find category to update'
+            })
+        }
+        if(image){
+            const deleteParams ={
+                Bucket: 'hacker-sanju',
+                Key: `category/${updated.image.key}`
+            }
+            s3.deleteObject(deleteParams, (err,data) => {
+                if(err){
+                    console.log('error during update'.err);
+                }else{
+                    console.log('update to s3'.data);
+                }
+            }) 
+            const params = {
+                Bucket: 'hacker-sanju',
+                Key: `category/${uuidv4()}.${type}`,
+                Body: base64Data,
+                ACL: 'public-read',
+                ContentEncoding: 'base64',
+                ContentType: `image/${type}`
+            }
+            s3.upload(params, (err, data)=>{
+                if(err){
+                    console.log(err);
+                    return res.status(400).json({
+                        error: "Image upload to s3 failed"
+                    })
+                }
+        
+                updated.image.url = data.Location
+                updated.image.key = data.Key
+                // save to db
+                updated.save((err, success )=>{
+                    if(err){
+                        console.log(err);
+                        return res.status(400).json({
+                            error : 'Duplicate category'
+                        })
+                    }
+                    res.json(success );
+                })
+            })
+        }else{
+            res.json(updated)
+        }
+    })
 }
 
 
 exports.remove = (req, res) =>{
+    const {slug} = req.params
+    Category.findOneAndRemove({slug}).exec((err,data)=>{
+        if(err){
+            return res.status(400).json({
+                error: 'could not delete category'
+            })
+        }
 
+        const deleteParams ={
+            Bucket: 'hacker-sanju',
+            Key: `category/${data.image.key}`
+        }
+        s3.deleteObject(deleteParams, (err,data) => {
+            if(err){
+                console.log('error during update'.err);
+            }else{
+                console.log('deleted to s3'.data);
+            }
+        }) 
+        res.json({
+            message:'Category deleted Successfully'
+        })
+    })
 }
