@@ -26,7 +26,7 @@ const Links = ({query,category,links,totalLinks,linksLimit,linkSkip}) =>{
 
     const listOfLinks = () =>
         allLinks.map((l,i)=>(
-            <div className="row alert alert-primary p-2">
+            <div key={i} className="row alert alert-primary p-2">
                 <div className="col-md-8" onClick={e => handleClick(l._id)}>
                     <a href={l.url} target="_blank">
                         <h5 className="pt-2">{l.title}</h5>
@@ -44,7 +44,7 @@ const Links = ({query,category,links,totalLinks,linksLimit,linkSkip}) =>{
                 </div>
                 <div className="col-md-12">
                     <span className="badge text-dark">{l.type} / {l.medium}</span>
-                    {l.categories.map((c,i) => (<span className="badge text-success">{c.name}</span>))}
+                    {l.categories.map((c,i) => (<span key={i} className="badge text-success">{c.name}</span>))}
                 </div>
             </div>
         ))
@@ -75,6 +75,16 @@ const Links = ({query,category,links,totalLinks,linksLimit,linkSkip}) =>{
             </div>
         </div>
         <br/>
+        {/* <div className="text-center pt-4 pb-5">{loadMoreButton()}</div> */}
+        <InfiniteScroll
+            pageStart={0}
+            loadMore={loadMore}
+            hasMore={size > 0 && size >= limit}
+            loader={<div className="lader" key={0}>
+                <img  key={0} src="/static/css/Display-Loading.gif" alt="Loading..."></img>
+            </div>}
+        >
+
         <div className="row">
             <div className="col-md-8">
                 {listOfLinks()}
@@ -84,19 +94,7 @@ const Links = ({query,category,links,totalLinks,linksLimit,linkSkip}) =>{
                 <p>show popular links</p>
             </div>
         </div>
-        {/* <div className="text-center pt-4 pb-5">{loadMoreButton()}</div> */}
-        <div className="row">
-            <div className="col-md-12 text-center">
-                <InfiniteScroll
-                    pageStart={0}
-                    loadMore={loadMore}
-                    hasMore={size > 0 && size >= limit}
-                    loader={<div className="lader" key={0}>
-                        <img  src="/static/css/Display-Loading.gif" alt="Loading..."></img>
-                    </div>}
-                ></InfiniteScroll>
-            </div>
-        </div>
+        </InfiniteScroll>
     </Layout>)
 }
 
