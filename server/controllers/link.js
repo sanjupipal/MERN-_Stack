@@ -9,6 +9,7 @@ AWS.config.update({
     region: process.env.AWS_REGION
 })
 const {linkPublishedParams} = require('../helpers/email')
+const category = require('../models/category')
 const ses = new AWS.SES({apiVersion:'2010-12-01'})
 
 
@@ -122,5 +123,43 @@ exports.remove = (req, res) =>{
         res.json({
             message: 'Link removed successfully'
         })
+    })
+}
+
+exports.popularInCategory = (req,res) =>{
+
+    const {slug} = req.params
+    Category.findOne({slug}).exec((err,category)=>{
+        if(err){
+            return res.status(400).json({
+                error: 'Error finding category'
+            })
+        }
+        Link.find({categories: category})
+        .sort({clicks: -1})
+        .limit(3)
+        .exec((err,links)=>{
+            if(err){
+                return res.status(400).json({
+                    error: 'Error finding link'
+                })
+            }
+            res.json(links)
+        })
+    })
+}
+
+exports.popular = (req,res) =>{
+    Link.find()
+    .populate('postedBy', 'name')
+    .sort({clicks: -1})
+    .limit(3)
+    .exec((err,links)=>{
+        if(err){
+            return res.status(400).json({
+                error: 'Error finding link'
+            })
+        }
+        res.json(links)
     })
 }
