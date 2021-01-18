@@ -42,13 +42,41 @@ exports.clickCount = (req, res) =>{
 }
 
 exports.read = (req, res) =>{
-    
+    const {id} = req.params
+    Link.findOne({_id: id}).exec((err, data)=>{
+        if(err){
+            return res.status(400).json({
+                error: 'Error finding link'
+            })
+        }
+        res.json(data)
+    })
 }
 
 exports.update = (req, res) =>{
-
+    const {id} = req.params
+    const {title, url ,categories, type, medium} = req.body 
+    const updatedLink = {title, url ,categories, type, medium}
+    Link.findOneAndUpdate({_id: id},updatedLink, {new:true}).exec((err, updated)=>{
+        if(err){
+            return res.status(400).json({
+                error: 'Error updating link'
+            })
+        }
+        res.json(updated)
+    })
 }
 
 exports.remove = (req, res) =>{
-
+    const {id} = req.params
+    Link.findOneAndRemove({_id: id}).exec((err, data)=>{
+        if(err){
+            return res.status(400).json({
+                error: 'Error removing link'
+            })
+        }
+        res.json({
+            message: 'Link removed successfully'
+        })
+    })
 }
