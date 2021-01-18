@@ -11,6 +11,9 @@ exports.userRegisterValidator = [
     check('password')
     .isLength({min:6})
     .withMessage('Password must be at least 6 digit'),
+    check('categories')
+    .isLength({min:6})
+    .withMessage('Pick at least one category'),
 ];
 
 exports.userLoginValidator = [

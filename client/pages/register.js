@@ -14,14 +14,52 @@ const  Register = () => {
         password:'',
         error: '',
         success:'', 
-        buttonText:'Register'
+        buttonText:'Register',
+        loadedCategories:[],
+        categories: []
 
     })
+
+    useEffect(() => {
+        loadCategories();
+    }, []);
+
+    const loadCategories = async () => {
+        const response = await axios.get(`${API}/categories`);
+        setState({ ...state, loadedCategories: response.data });
+    };
+
+    const handleToggle = c => () => {
+        // return the first index or -1
+        const clickedCategory = categories.indexOf(c);
+        const all = [...categories];
+
+        if (clickedCategory === -1) {
+            all.push(c);
+        } else {
+            all.splice(clickedCategory, 1);
+        }
+        console.log('all >> categories', all);
+        setState({ ...state, categories: all, success: '', error: '' });
+    };
+
+    // show categories > checkbox
+    const showCategories = () => {
+        return (
+            loadedCategories &&
+            loadedCategories.map((c, i) => (
+                <li className="list-unstyled" key={c._id}>
+                    <input type="checkbox" onChange={handleToggle(c._id)} className="mr-2" />
+                    <label className="form-check-label">{c.name}</label>
+                </li>
+            ))
+        );
+    };
 
     useEffect(()=>{
         isAuth() && Router.push('/')
     }, [])
-    const {name, email, password, error, success, buttonText} = state;
+    const {name, email, password, error, success, buttonText, loadedCategories, categories} = state;
     const handelChange = (name) =>(e) =>{
         setState({...state, [name]: e.target.value, error: '', success:'', buttonText:'Register'})
     }
@@ -32,7 +70,7 @@ const  Register = () => {
 
         try{
             const response  = await axios.post(`${API}/register`, {
-                name: name, email: email, password: password
+                name: name, email: email, password: password, categories
             })
             console.log(response);
 
@@ -61,6 +99,10 @@ const  Register = () => {
             <div className="form-group" >
                 <input value={password} onChange={handelChange('password')} type="password" className="form-control" required placeholder="Type your password"></input>
             </div>
+            <div className="form-group">
+                        <label className="text-muted ml-4">Category</label>
+                        <ul style={{ maxHeight: '100px', overflowY: 'scroll' }}>{showCategories()}</ul>
+                    </div>
             <div className="form-group" >
                 <button className="btn btn-outline-warning">{buttonText}</button>
             </div>

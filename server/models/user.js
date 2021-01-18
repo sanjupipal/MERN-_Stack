@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const { ObjectId } = mongoose.Schema
 
 const userSchema = new mongoose.Schema(
     {
@@ -37,7 +38,10 @@ const userSchema = new mongoose.Schema(
         resetPasswordLink: {
             Data: String,
             default: ''
-        }
+        },
+        categories: [{
+            type: ObjectId, ref: 'Category', required: true
+        }],
     },
     { timestamps: true }
 );
