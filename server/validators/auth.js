@@ -40,3 +40,10 @@ exports.restPasswordValidator = [
     .isEmpty()
     .withMessage('token is require  '),
 ];
+
+exports.userUpdateValidator = [
+    check('name')
+    .not()
+    .isEmpty()
+    .withMessage('Name is required'),
+];
