@@ -54,9 +54,13 @@ const Update = ({oldLink, token}) => {
     };
 
     const handleSubmit = async e => {
-        e.preventDefault();
+        e.preventDefault()
+        let dynamicUpdateUrl = `${API}/link/${oldLink._id}`
+        if(isAuth() && isAuth().role === 'admin'){
+            dynamicUpdateUrl =  `${API}/link/admin/${oldLink._id}`
+        }
         try{
-            const response = await axios.put(`${API}/link/${oldLink._id}`, {title, url, type, categories, medium }, {
+            const response = await axios.put(dynamicUpdateUrl, {title, url, type, categories, medium }, {
                 headers:{
                     Authorization: `Bearer ${token}`
                 }

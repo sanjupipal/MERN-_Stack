@@ -16,10 +16,33 @@ const Links = ({token ,links,totalLinks,linksLimit,linkSkip}) =>{
     const [skip , setSkip] = useState(0)
     const [size, setSize] = useState(totalLinks)
 
+    const confirmDelete =(e,id) =>{
+        // console.log('delete >', id);
+        e.preventDefault();
+        let answer = window.confirm('Are you sure you want to delete?')
+        if(answer){
+            handleDelete(id);
+        }
+    }
+
+    const handleDelete = async (id) =>{
+         try{
+            const response = await axios.delete(`${API}/link/admin/${id}`,{
+                headers:{
+                    Authorization:`Bearer ${token}`
+                }
+            })
+            console.log('LINK delete success', response);
+            process.browser && window.location.reload();
+         }catch(error){
+            console.error(error);
+         }
+    }
+
     const listOfLinks = () =>
         allLinks.map((l,i)=>(
             <div key={i} className="row alert alert-primary p-2">
-                <div className="col-md-8" onClick={e => handleClick(l._id)}>
+                <div className="col-md-8" >
                     <a href={l.url} target="_blank">
                         <h5 className="pt-2">{l.title}</h5>
                         <h6 className="pt-2 text-danger" style={{fontSize:'12px'}}>
@@ -37,13 +60,17 @@ const Links = ({token ,links,totalLinks,linksLimit,linkSkip}) =>{
                 <div className="col-md-12">
                     <span className="badge text-dark">{l.type} / {l.medium}</span>
                     {l.categories.map((c,i) => (<span key={i} className="badge text-success">{c.name}</span>))}
+                    <button onClick={(e)=>confirmDelete(e,l._id)} className="btn btn-sm btn-outline-success pull-right mb-1 mr-1">Delete</button>
+                    <Link href={`/user/link/${l._id}`}>
+                        <a><button className="btn btn-sm btn-outline-danger pull-right mb-1 mr-1">Update</button></a>
+                    </Link>
                 </div>
             </div>
         ))
 
         const loadMore = async ()=>{
             let toSkip = skip + limit
-            const response = await axios.post(`${API}/links`, {skip, limit}, {
+            const response = await axios.post(`${API}/links`, {skip: toSkip, limit}, {
                 headers:{
                     Authorization: `Bearer ${token}`
                 }
@@ -81,7 +108,7 @@ const Links = ({token ,links,totalLinks,linksLimit,linkSkip}) =>{
 
 Links.getInitialProps = async ({req}) =>{
     let skip = 0
-    let limit = 2
+    let limit = 5
     const token = getCookie('token', req)
     const response = await axios.post(`${API}/links`, {skip, limit}, {
         headers:{
