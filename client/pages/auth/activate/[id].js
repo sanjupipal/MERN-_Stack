@@ -32,7 +32,7 @@ const ActivateAccount = ({router}) =>{
 
         try{
             const response = await axios.post(`${API}/register/activate`, {token} )
-            console.log(response);
+            // console.log(response);
             setState({...state, name:'', token:'', buttonText:'Activated', success: response.data.message})
         }catch(error){
             setState({...state, name:'', token:'', buttonText:'Activate Account', error: error.response.data.error})

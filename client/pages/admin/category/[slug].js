@@ -71,7 +71,7 @@ const Update = ({oldCategory, token }) => {
                     }
                 }
             );
-            console.log('CATEGORY UPDATE RESPONSE', response);
+            // console.log('CATEGORY UPDATE RESPONSE', response);
             setImageUploadButtonName('Update image');
             setState({
                 ...state,

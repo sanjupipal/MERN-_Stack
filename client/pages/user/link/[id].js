@@ -119,7 +119,7 @@ const Update = ({oldLink, token}) => {
         } else {
             all.splice(clickedCategory, 1);
         }
-        console.log('all >> categories', all);
+        // console.log('all >> categories', all);
         setState({ ...state, categories: all, success: '', error: '' });
     };
 

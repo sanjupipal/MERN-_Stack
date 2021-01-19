@@ -24,7 +24,7 @@ const  User = ({ user, token, userLinks }) => {
                    Authorization:`Bearer ${token}`
                }
            })
-           console.log('Link delete success', response);
+        //    console.log('Link delete success', response);
            Router.replace('/user')
         }catch(error){
            console.error(error);

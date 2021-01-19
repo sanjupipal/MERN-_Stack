@@ -40,7 +40,7 @@ const  Profile = ({user, token}) => {
         } else {
             all.splice(clickedCategory, 1);
         }
-        console.log('all >> categories', all);
+        // console.log('all >> categories', all);
         setState({ ...state, categories: all, success: '', error: '' });
     };
 
@@ -72,7 +72,7 @@ const  Profile = ({user, token}) => {
                     Authorization: `Bearer ${token}`
                 }
             }) 
-            console.log(response);
+            // console.log(response);
             updateUser(response.data, ()=>{
                 setState({
                     ...state,

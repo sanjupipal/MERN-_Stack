@@ -32,7 +32,7 @@ const Links = ({token ,links,totalLinks,linksLimit,linkSkip}) =>{
                     Authorization:`Bearer ${token}`
                 }
             })
-            console.log('LINK delete success', response);
+            // console.log('LINK delete success', response);
             process.browser && window.location.reload();
          }catch(error){
             console.error(error);

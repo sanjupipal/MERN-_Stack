@@ -23,7 +23,7 @@ const Read = ({user , token}) =>{
         const loadCategories = async () =>{
             const  response = await axios.get(`${API}/categories`)
             setState({...state, categories: response.data})
-            console.log(response.data);
+            // console.log(response.data);
         }
 
         const confirmDelete =(e,slug) =>{
@@ -42,7 +42,7 @@ const Read = ({user , token}) =>{
                         Authorization:`Bearer ${token}`
                     }
                 })
-                console.log('category delete success', response);
+                // console.log('category delete success', response);
                 loadCategories()
              }catch(error){
                 console.error(error);

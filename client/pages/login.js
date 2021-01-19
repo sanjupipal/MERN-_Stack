@@ -34,7 +34,7 @@ const  Login = () => {
             const response  = await axios.post(`${API}/login`, {
                  email: email, password: password
             })
-            console.log(response);
+            // console.log(response);
             authenticate(response, ()=> isAuth() && isAuth().role === 'admin' ? Router.push('/admin') : Router.push('/user'))
         }catch(error){
             console.log(error);

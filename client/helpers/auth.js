@@ -36,7 +36,7 @@ export const getCookieFromServer = (key, req) =>{
     }
     let tokenValue = token.split('=')[1]
 
-    console.log(tokenValue);
+    // console.log(tokenValue);
     return tokenValue
 }
 

@@ -70,7 +70,7 @@ const Create = ({ user, token }) => {
                     }, imageUploadText
                 }
             );
-            console.log('CATEGORY CREATE RESPONSE', response);
+            // console.log('CATEGORY CREATE RESPONSE', response);
             setImageUploadButtonName('Upload image');
             setContent('')
             setState({

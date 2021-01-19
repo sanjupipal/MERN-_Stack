@@ -39,7 +39,7 @@ const  Register = () => {
         } else {
             all.splice(clickedCategory, 1);
         }
-        console.log('all >> categories', all);
+        // console.log('all >> categories', all);
         setState({ ...state, categories: all, success: '', error: '' });
     };
 
@@ -72,7 +72,7 @@ const  Register = () => {
             const response  = await axios.post(`${API}/register`, {
                 name: name, email: email, password: password, categories
             })
-            console.log(response);
+            // console.log(response);
 
             setState({
                 ...state,
@@ -83,7 +83,7 @@ const  Register = () => {
                success: response.data.message
             })
         }catch(error){
-            console.log(error);
+            // console.log(error);
             setState({...state, buttonText:'Register', error: error.response.data.error})
         }
     }
