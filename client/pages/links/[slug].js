@@ -1,8 +1,9 @@
 import Layout from '../../components/layout';
 import axios from 'axios'
-import { API } from '../../config'
+import Head from 'next/head'
+import { API, APP_NAME } from '../../config'
 import Link from 'next/link'
-import {useState, useEffect} from 'react'
+import {useState, useEffect, Fragment} from 'react'
 import renderHTML from 'react-render-html'
 import moment from 'moment'
 import InfiniteScroll from 'react-infinite-scroller'
@@ -15,6 +16,13 @@ const Links = ({query,category,links,totalLinks,linksLimit,linkSkip}) =>{
     const [size, setSize] = useState(totalLinks)
     const [popular , setPopular] = useState([])
 
+    const head = ()=>{
+        <Head>
+            <title>
+                {category.name} | {APP_NAME}
+            </title>
+        </Head>
+    }
 
     useEffect(()=>{
         loadPopular()
@@ -97,39 +105,44 @@ const Links = ({query,category,links,totalLinks,linksLimit,linkSkip}) =>{
             setSkip(toSkip)
         }
 
-    return (<Layout>
-        <div className="row">
-            <div className="col-md-8">
-                <h1 className="display-4 font-weight-bold">{category.name} - URL/Links</h1>
-                <div className="lead alert alert-secondary pt-4">{renderHTML(category.content)}</div>
-            </div>
-            <div className="col-md-4">
-                <img src={category.image.url} alt={category.name} style={{width:'auto', maxHeight:'200px'}}></img>
-            </div>
-        </div>
-        <br/>
-        <InfiniteScroll
-            pageStart={0}
-            loadMore={loadMore}
-            hasMore={size > 0 && size >= limit}
-            loader={<div className="lader" key={0}>
-                <img  key={0} src="/static/css/Display-Loading.gif" alt="Loading..."></img>
-            </div>}
-        >
-
-        <div className="row">
-            <div className="col-md-8">
-                {listOfLinks()}
-            </div>
-            <div className="col-md-4">
-                <h2 className="lead">Most popular in {category.name}</h2>
-                <div className="p-3">
-                    {listOfPopularLinks()}
+    return (
+        <Fragment>
+            {head()}
+                <Layout>
+            <div className="row">
+                <div className="col-md-8">
+                    <h1 className="display-4 font-weight-bold">{category.name} - URL/Links</h1>
+                    <div className="lead alert alert-secondary pt-4">{renderHTML(category.content)}</div>
+                </div>
+                <div className="col-md-4">
+                    <img src={category.image.url} alt={category.name} style={{width:'auto', maxHeight:'200px'}}></img>
                 </div>
             </div>
-        </div>
-        </InfiniteScroll>
-    </Layout>)
+            <br/>
+            <InfiniteScroll
+                pageStart={0}
+                loadMore={loadMore}
+                hasMore={size > 0 && size >= limit}
+                loader={<div className="lader" key={0}>
+                    <img  key={0} src="/static/css/Display-Loading.gif" alt="Loading..."></img>
+                </div>}
+            >
+
+            <div className="row">
+                <div className="col-md-8">
+                    {listOfLinks()}
+                </div>
+                <div className="col-md-4">
+                    <h2 className="lead">Most popular in {category.name}</h2>
+                    <div className="p-3">
+                        {listOfPopularLinks()}
+                    </div>
+                </div>
+            </div>
+            </InfiniteScroll>
+        </Layout>
+        </Fragment>
+    )
 }
 
 Links.getInitialProps = async ({query, req}) =>{
