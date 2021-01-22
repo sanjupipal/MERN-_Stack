@@ -2,7 +2,7 @@
 Check Out 
 http://sanjumeanstack.cf/
 It is the place to find most relevant study material about a language/technolgy.
-# Key features of -
+# Key features -
 1) user can submit link under any category.
 2) user can modify their links.
 3) user can modify his/her profile.
@@ -11,7 +11,7 @@ It is the place to find most relevant study material about a language/technolgy.
 6) tranding links of all categories are shown on home page and tranding links of a category is shown on category page.
 7) user have to select any one category to ragister him/her self as when any new link is added under that category user gets a mail notification.
 8) JWT Authentication is used.
-# Technology Used-
+# Technology Used -
 1) NextJs is used in front end 
 2) NodeJs is used in back end
 3) Express is used in back end
