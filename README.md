@@ -1,6 +1,6 @@
 # MERN-Stack
 Check Out 
-http://sanjumeanstack.cf/
+http://ec2-18-188-38-81.us-east-2.compute.amazonaws.com/
 It is the place to find most relevant study material about a language/technolgy.
 # Key features -
 1) user can submit link under any category.
